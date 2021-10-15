@@ -50,7 +50,7 @@ module "aws-iam" {
 */
 
 resource "aws_instance" "bastion-server" {
-  ami                         = data.aws_ami.distro.id
+  ami           = "ami-00399ec92321828f5"
   instance_type               = var.aws_bastion_size
   count                       = var.aws_bastion_num
   associate_public_ip_address = true
@@ -74,7 +74,7 @@ resource "aws_instance" "bastion-server" {
 */
 
 resource "aws_instance" "k8s-master" {
-  ami           = data.aws_ami.distro.id
+  ami           = "ami-00399ec92321828f5"
   instance_type = var.aws_kube_master_size
 
   count = var.aws_kube_master_num
@@ -105,7 +105,7 @@ resource "aws_elb_attachment" "attach_master_nodes" {
 }
 
 resource "aws_instance" "k8s-etcd" {
-  ami           = data.aws_ami.distro.id
+  ami           = "ami-00399ec92321828f5"
   instance_type = var.aws_etcd_size
 
   count = var.aws_etcd_num
@@ -129,7 +129,7 @@ resource "aws_instance" "k8s-etcd" {
 }
 
 resource "aws_instance" "k8s-worker" {
-  ami           = data.aws_ami.distro.id
+  ami           = "ami-00399ec92321828f5"
   instance_type = var.aws_kube_worker_size
 
   count = var.aws_kube_worker_num
