@@ -49,6 +49,8 @@ Example (this one assumes you are using Ubuntu)
 
 ```commandline
 ansible-playbook -i ./inventory/hosts ./cluster.yml -e ansible_user=ubuntu -b --become-user=root --flush-cache
+ansible-playbook -i ./inventory/hosts -e cloud_provider=aws -e ansible_user=ubuntu -b -v cluster.yml
+
 ```
 
 ***Using other distrib than Ubuntu***

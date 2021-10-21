@@ -44,6 +44,40 @@ module "aws-iam" {
   aws_cluster_name = var.aws_cluster_name
 }
 
+
+
+
+/*
+* Create RDS Database in AWS
+*
+*/
+
+resource "aws_db_subnet_group" "db-group" {
+  subnet_ids = [
+    element(module.aws-vpc.aws_subnet_ids_public, 0),
+    element(module.aws-vpc.aws_subnet_ids_public, 1)
+  ]
+}
+
+resource "aws_db_instance" "postgresql" {
+  instance_class = "db.t2.micro"
+  engine = "postgres"
+  engine_version = "10.17"
+  publicly_accessible = true
+  allocated_storage = 10
+  max_allocated_storage = 15
+  username = var.RDS_USER
+  password = var.RDS_PASS
+  name = var.RDS_DB
+  skip_final_snapshot = true
+  vpc_security_group_ids = module.aws-vpc.rds_security_group
+  db_subnet_group_name = aws_db_subnet_group.db-group.name
+  tags = {
+    Name = "PostgreSQL"
+  }
+}
+
+
 /*
 * Create Bastion Instances in AWS
 *

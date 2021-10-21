@@ -2,6 +2,10 @@ output "bastion_ip" {
   value = join("\n", aws_instance.bastion-server.*.public_ip)
 }
 
+output "rds_addresses" {
+    value = "${aws_db_instance.postgresql.*.address}"
+}
+
 output "masters" {
   value = join("\n", aws_instance.k8s-master.*.private_ip)
 }

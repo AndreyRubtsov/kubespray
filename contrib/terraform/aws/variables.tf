@@ -1,3 +1,14 @@
+variable "RDS_USER" {
+  description = "RDS user"
+}
+variable "RDS_PASS" {
+  description = "RDS password"
+}
+variable "RDS_DB" {
+  description = "RDS database"
+}
+
+
 variable "AWS_ACCESS_KEY_ID" {
   description = "AWS Access Key"
 }

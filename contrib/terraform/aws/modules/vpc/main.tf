@@ -132,3 +132,40 @@ resource "aws_security_group_rule" "allow-ssh-connections" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.kubernetes.id
 }
+
+
+resource "aws_security_group" "rds" {
+  name   = "kubernetes-${var.aws_cluster_name}-rds-securitygroup"
+  vpc_id = aws_vpc.cluster-vpc.id
+
+  tags = merge(var.default_tags, tomap({
+    Name = "kubernetes-${var.aws_cluster_name}-rds-securitygroup"
+  }))
+}
+
+resource "aws_security_group_rule" "allow-all-in-cluster" {
+  type              = "ingress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  cidr_blocks       = [var.aws_vpc_cidr_block]
+  security_group_id = aws_security_group.rds.id
+}
+
+resource "aws_security_group_rule" "allow-all-out-cluster" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 65535
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.rds.id
+}
+
+resource "aws_security_group_rule" "allow-postgres-connections" {
+  type              = "ingress"
+  from_port         = 5432
+  to_port           = 5432
+  protocol          = "TCP"
+  cidr_blocks       = ["46.47.225.138/32","79.134.222.12/32"]
+  security_group_id = aws_security_group.rds.id
+}
